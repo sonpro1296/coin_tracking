@@ -16,7 +16,7 @@ class PriceTracker:
         event_loop.run_until_complete(self.get_messages())
 
     async def get_messages(self):
-        async with connect(self.uri) as ws:
+        async with connect(self.uri, ping_interval=None) as ws:
             await ws.send(self.msg)
             while True:
                 d = await ws.recv()
