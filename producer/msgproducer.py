@@ -7,17 +7,10 @@ from confluent_kafka import Producer, admin
 
 class MsgProducer:
     def __init__(self, bootstrap_server: str, topic: str, queue: asyncio.Queue):
-        conf = {'bootstrap.servers': '14.225.254.108:9092'}
+        conf = {'bootstrap.servers': bootstrap_server}
         self.producer = Producer(conf)
         self.topic = topic
         self.input = queue
-
-        kafka_broker = {'bootstrap.servers': '14.225.254.108:9092'}
-        admin_client = admin.AdminClient(kafka_broker)
-        topics = admin_client.list_topics().topics
-
-        if not topics:
-            raise RuntimeError()
 
     async def run(self):
         while True:

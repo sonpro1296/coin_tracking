@@ -1,13 +1,11 @@
 import asyncio
 import json
-import venv
 
 from source.tracker import PriceTracker
 from dispatcher.dispatcher import Dispatcher
 from candlestick.generator import CandlestickGenerator
 from producer.msgproducer import MsgProducer
 
-import threading
 
 subcribe_msg = json.dumps({
     "type": "subscribe",
