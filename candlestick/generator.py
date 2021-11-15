@@ -2,6 +2,8 @@ import asyncio
 import json
 import datetime
 
+import jsonpickle
+
 
 class CandleStick:
     def __init__(self, low, high, o, c, volume):
@@ -16,9 +18,8 @@ class CandleStick:
         return f'open: {self.open}, close: {self.close}, high: {self.high}, low:{self.low}, volume: {self.volume}'
 
     def toJSONWithMinuteMark(self, dt: datetime.datetime):
-        self.ts = dt.replace(second=0, microsecond=0).timestamp()
-        return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=True)
+        self.ts = int(dt.replace(second=0, microsecond=0).timestamp())
+        return jsonpickle.encode(self)
 
 
 class CandlestickGenerator:
@@ -67,7 +68,6 @@ class CandlestickGenerator:
 
                 # print(self.candlestick.toJSON())
                 await self.output_queue.put(self.candlestick.toJSONWithMinuteMark(dt))
-                # self.candlestick = CandleStick(price, price, price, price, volume)
                 self.candlestick = CandleStick(price, price, price, price, volume)
                 self.last_dt = dt
                 self.first_dt = dt
