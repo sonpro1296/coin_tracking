@@ -5,6 +5,7 @@ import datetime
 
 class CandleStick:
     def __init__(self, low, high, o, c, volume):
+        self.ts = None
         self.low = low
         self.high = high
         self.open = o
@@ -14,7 +15,8 @@ class CandleStick:
     def __repr__(self):
         return f'open: {self.open}, close: {self.close}, high: {self.high}, low:{self.low}, volume: {self.volume}'
 
-    def toJSON(self):
+    def toJSONWithMinuteMark(self, dt: datetime.datetime):
+        self.ts = dt - datetime.timedelta(seconds=dt.second, milliseconds=dt.microsecond)
         return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=True)
 
@@ -60,9 +62,13 @@ class CandlestickGenerator:
                 new_volume = self.candlestick.volume + volume
                 self.candlestick = CandleStick(new_low, new_high, new_open, new_close, new_volume)
             else:
+                if dt < self.first_dt:
+                    continue  # drop data from minute before
+
                 # print(self.candlestick.toJSON())
-                await self.output_queue.put(self.candlestick.toJSON())
+                await self.output_queue.put(self.candlestick.toJSONWithMinuteMark(dt))
                 # self.candlestick = CandleStick(price, price, price, price, volume)
+                self.candlestick = CandleStick(price, price, price, price, volume)
                 self.last_dt = dt
                 self.first_dt = dt
                 self.current_min = minute
