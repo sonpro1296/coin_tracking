@@ -16,7 +16,7 @@ class CandleStick:
         return f'open: {self.open}, close: {self.close}, high: {self.high}, low:{self.low}, volume: {self.volume}'
 
     def toJSONWithMinuteMark(self, dt: datetime.datetime):
-        self.ts = str(dt - datetime.timedelta(seconds=dt.second, milliseconds=dt.microsecond))
+        self.ts = dt.replace(second=0, microsecond=0).timestamp()
         return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=True)
 
