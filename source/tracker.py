@@ -19,11 +19,12 @@ class PriceTracker:
         async with connect(self.uri, ping_interval=None) as ws:
             await ws.send(self.msg)
             while True:
-                d = await ws.recv()
-                # print("tracker: ", d)
-                await self.queue.put(d)
-                # print("putted to queue")
-                await asyncio.sleep(0.1)
+                try:
+                    d = await ws.recv()
+                    await self.queue.put(d)
+                    await asyncio.sleep(0.1)
+                except Exception as e:
+                    print(e)
 
     def get_queue(self):
         return self.queue
@@ -47,6 +48,3 @@ sub_msg = json.dumps({
         }
     ]
 })
-
-
-
