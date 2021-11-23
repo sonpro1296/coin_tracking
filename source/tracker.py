@@ -1,6 +1,6 @@
 import asyncio
 import json
-
+import tenacity
 from websockets import connect
 import multiprocessing
 
@@ -15,6 +15,7 @@ class PriceTracker:
     def run(self, event_loop: asyncio.events):
         event_loop.run_until_complete(self.get_messages())
 
+    @tenacity.retry(wait=tenacity.wait_fixed(1))
     async def get_messages(self):
         async with connect(self.uri, ping_interval=None) as ws:
             await ws.send(self.msg)
@@ -24,7 +25,8 @@ class PriceTracker:
                     await self.queue.put(d)
                     await asyncio.sleep(0.1)
                 except Exception as e:
-                    print(e)
+                    print("print error: ", e)
+
 
     def get_queue(self):
         return self.queue
