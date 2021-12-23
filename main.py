@@ -9,18 +9,12 @@ from producer.msgproducer import MsgProducer
 
 subcribe_msg = json.dumps({
     "type": "subscribe",
-    "product_ids": [
-        "ETH-USD",
-        # "BTC-USD"
-    ],
     "channels": [
-        # "level2"
-        # "heartbeat",
         {
             "name": "ticker",
             "product_ids": [
                 "ETH-USD",
-                # "BTC-USD"
+                "BTC-USD"
             ]
         }
     ]
@@ -34,7 +28,7 @@ dispatcher.add_output(queue)
 generator = CandlestickGenerator(queue)
 
 generator_queue = generator.get_output_queue()
-producer = MsgProducer("14.225.254.108:9092", "candlestick2", generator_queue)
+producer = MsgProducer("14.225.254.108:9092", "candlestick3", generator_queue)
 
 # tracker.run()
 # dispatcher.start()

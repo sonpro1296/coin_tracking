@@ -15,18 +15,17 @@ class PriceTracker:
     def run(self, event_loop: asyncio.events):
         event_loop.run_until_complete(self.get_messages())
 
-    @tenacity.retry(wait=tenacity.wait_fixed(1))
     async def get_messages(self):
-        async with connect(self.uri, ping_interval=None) as ws:
+        async with connect(self.uri, compression=None) as ws:
             await ws.send(self.msg)
             while True:
                 try:
                     d = await ws.recv()
+                    # print(d)
                     await self.queue.put(d)
-                    await asyncio.sleep(0.1)
                 except Exception as e:
-                    print("print error: ", e)
-
+                    print(e)
+                    continue
 
     def get_queue(self):
         return self.queue
