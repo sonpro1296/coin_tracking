@@ -24,7 +24,8 @@ class PriceTracker:
                     d = await asyncio.wait_for(ws.recv(), timeout=10)
                     await self.queue.put(d)
                     await asyncio.sleep(0.1)
-                except:
+                except Exception as e:
+                    print(e)
                     continue
 
     def get_queue(self):
