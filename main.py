@@ -13,8 +13,7 @@ subcribe_msg = json.dumps({
         {
             "name": "ticker",
             "product_ids": [
-                "ETH-USD",
-                "BTC-USD"
+                "ETH-USD"
             ]
         }
     ]

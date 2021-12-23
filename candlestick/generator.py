@@ -37,7 +37,7 @@ class CandlestickGenerator:
             json_msg = json.loads(msg)
             if json_msg["type"] != "ticker":
                 continue
-            # print("candlestick: ", json_msg)
+            print("candlestick: ", json_msg)
             seq, price, dt, volume = self.get_data_from_msg(json_msg)
             if seq < self.seq:
                 return
