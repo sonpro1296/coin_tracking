@@ -21,12 +21,11 @@ class PriceTracker:
             await ws.send(self.msg)
             while True:
                 try:
-                    d = await ws.recv()
+                    d = await asyncio.wait_for(ws.recv(), timeout=10)
                     await self.queue.put(d)
                     await asyncio.sleep(0.1)
-                except Exception as e:
-                    print("print error: ", e)
-
+                except:
+                    continue
 
     def get_queue(self):
         return self.queue
