@@ -4,7 +4,6 @@ import json
 from source.tracker import PriceTracker
 from dispatcher.dispatcher import Dispatcher
 from candlestick.generator import CandlestickGenerator
-from producer.msgproducer import MsgProducer
 
 
 subcribe_msg = json.dumps({
@@ -27,7 +26,7 @@ dispatcher.add_output(queue)
 generator = CandlestickGenerator(queue)
 
 generator_queue = generator.get_output_queue()
-producer = MsgProducer("14.225.254.108:9092", "candlestick3", generator_queue)
+# producer = MsgProducer("14.225.254.108:9092", "candlestick3", generator_queue)
 
 # tracker.run()
 # dispatcher.start()
@@ -41,7 +40,7 @@ event_loop = asyncio.get_event_loop()
 event_loop.create_task(tracker.get_messages())
 event_loop.create_task(dispatcher.run())
 event_loop.create_task(generator.loop())
-event_loop.create_task(producer.run())
+# event_loop.create_task(producer.run())
 
 event_loop.run_forever()
 

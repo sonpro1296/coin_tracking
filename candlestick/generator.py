@@ -37,7 +37,7 @@ class CandlestickGenerator:
             json_msg = json.loads(msg)
             if json_msg["type"] != "ticker":
                 continue
-            print("candlestick: ", json_msg)
+            # print("candlestick: ", json_msg)
             seq, price, dt, volume = self.get_data_from_msg(json_msg)
             if seq < self.seq:
                 return
@@ -62,6 +62,7 @@ class CandlestickGenerator:
                 new_volume = self.candlestick.volume + volume
                 self.candlestick = CandleStick(new_low, new_high, new_open, new_close, new_volume)
             else:
+                print(self.candlestick.toJSONWithMinuteMark(dt))
                 await self.output_queue.put(self.candlestick.toJSONWithMinuteMark(dt))
                 self.candlestick = CandleStick(price, price, price, price, volume)
                 self.last_dt = dt
