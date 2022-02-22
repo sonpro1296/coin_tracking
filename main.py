@@ -31,7 +31,7 @@ generator_queue = generator.get_output_queue()
 # tracker.run()
 # dispatcher.start()
 # generator.run()
-event_loop = asyncio.new_event_loop()
+event_loop = asyncio.get_event_loop()
 
 # threading.Thread(target=tracker.run, args=(event_loop,)).start()
 # threading.Thread(target=dispatcher.start, args=(event_loop,)).start()
@@ -42,6 +42,5 @@ event_loop.create_task(dispatcher.run())
 event_loop.create_task(generator.loop())
 # event_loop.create_task(producer.run())
 while True:
-    asyncio.set_event_loop(event_loop)
     event_loop.run_forever()
 
