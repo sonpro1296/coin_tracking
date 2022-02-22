@@ -25,7 +25,7 @@ class PriceTracker:
                     await self.queue.put(d)
                 except Exception as e:
                     print(e)
-                    continue
+                    return
 
     def get_queue(self):
         return self.queue
