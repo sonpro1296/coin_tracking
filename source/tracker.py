@@ -22,7 +22,7 @@ class PriceTracker:
                 try:
                     d = await ws.recv()
                     # print(d)
-                    await self.queue.put(d)
+                    self.queue.put_nowait(d)
                 except Exception as e:
                     print(e)
                     return False
