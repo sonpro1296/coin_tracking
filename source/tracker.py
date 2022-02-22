@@ -15,17 +15,18 @@ class PriceTracker:
     def run(self, event_loop: asyncio.events):
         event_loop.run_until_complete(self.get_messages())
 
-    async def get_messages(self) -> bool:
+    async def get_messages(self):
         async with connect(self.uri, compression=None) as ws:
             await ws.send(self.msg)
             while True:
                 try:
                     d = await ws.recv()
                     # print(d)
-                    self.queue.put_nowait(d)
+                    await self.queue.put(d)
                 except Exception as e:
                     print(e)
-                    return False
+                    asyncio.get_event_loop().stop()
+                    return
 
     def get_queue(self):
         return self.queue
