@@ -41,8 +41,8 @@ event_loop = asyncio.new_event_loop()
 event_loop.create_task(dispatcher.run())
 event_loop.create_task(generator.loop())
 # event_loop.create_task(producer.run())
+asyncio.set_event_loop(event_loop)
 
 while True:
-    asyncio.set_event_loop(event_loop)
     event_loop.run_until_complete(tracker.get_messages())
 
