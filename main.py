@@ -36,9 +36,9 @@ event_loop = asyncio.new_event_loop()
 # threading.Thread(target=generator.run, args=(event_loop,)).start()
 
 # event_loop.create_task(tracker.get_messages())
+asyncio.set_event_loop(event_loop)
 event_loop.create_task(dispatcher.run())
 event_loop.create_task(generator.loop())
-asyncio.set_event_loop(event_loop)
 
 while True:
     event_loop.run_until_complete(tracker.get_messages())
