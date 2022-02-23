@@ -25,7 +25,6 @@ class PriceTracker:
                     await self.queue.put(d)
                 except Exception as e:
                     print(e)
-                    asyncio.get_event_loop().stop()
                     return
 
     def get_queue(self):
